@@ -14,12 +14,9 @@ const Tour = ({ tour, removeTour }) => {
   const [titleMinHeight, setTitleMinHeight] = useState(0);
 
   useEffect(() => {
-    setDescTextMinHeight(
-      getBiggestHeight(document.querySelectorAll(".single-tour .info p"))
-    );
-    setTitleMinHeight(
-      getBiggestHeight(document.querySelectorAll(".single-tour .info h5"))
-    );
+    const descTextEls = document.querySelectorAll(".info > p");
+    const titleEls = document.querySelectorAll(".info > h5");
+
     const equalHeight = () => {
       // reset height to get new biggest height
       setDescTextMinHeight(0);
@@ -28,17 +25,15 @@ const Tour = ({ tour, removeTour }) => {
       setTimeout(() => {
         if (window.matchMedia("(max-width: 600px)").matches) {
           setDescTextMinHeight(0);
+          setTitleMinHeight(0);
         } else {
-          setDescTextMinHeight(
-            getBiggestHeight(document.querySelectorAll(".single-tour .info p"))
-          );
-          setTitleMinHeight(
-            getBiggestHeight(document.querySelectorAll(".single-tour .info h5"))
-          );
+          setDescTextMinHeight(getBiggestHeight(descTextEls));
+          setTitleMinHeight(getBiggestHeight(titleEls));
         }
-      }, 1000);
+      }, 500);
     };
-    const throttleEqualHeight = throttle(equalHeight, 1000);
+    equalHeight();
+    const throttleEqualHeight = throttle(equalHeight, 500);
     window.addEventListener("resize", throttleEqualHeight);
     return () => {
       window.removeEventListener("resize", throttleEqualHeight);
