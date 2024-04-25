@@ -60,15 +60,11 @@ button {
   font-size: 20px;
   margin: 0;
   font-weight: 400;
-  min-height: 47px;
 }
 .info > p {
   color: #64748b;
   line-height: 1.5;
   margin-bottom: 5px;
-}
-.info > p:not(.limit) {
-  min-height: 312px;
 }
 .info > p.limit {
   overflow: hidden;
@@ -142,34 +138,13 @@ button {
     transform: rotate(360deg);
   }
 }
-@media only screen and (max-width: 1440px) {
-  .info > p:not(.limit) {
-    min-height: 312px;
-  }
-}
 @media only screen and (max-width: 1200px) {
   .tours-container {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-@media only screen and (max-width: 1024px) {
-  .info > p:not(.limit) {
-    min-height: 264px;
-  }
-}
-@media only screen and (max-width: 768px) {
-  .info > p:not(.limit) {
-    min-height: 336px;
-  }
-}
 @media only screen and (max-width: 600px) {
   .tours-container {
     grid-template-columns: 1fr;
-  }
-  .info > h5 {
-    min-height: 0;
-  }
-  .info > p:not(.limit) {
-    min-height: 0;
   }
 }

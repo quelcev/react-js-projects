@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getBiggestHeight, throttle } from "./utils";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -6,9 +7,43 @@ const formatter = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 0,
 });
 
-const Tour = ({ tour, removeTour, descHeights, descHeight, setDescHeight }) => {
+const Tour = ({ tour, removeTour }) => {
   const { id, image, info, name, price } = tour;
   const [showFullText, setShowFullText] = useState(false);
+  const [descTextMinHeight, setDescTextMinHeight] = useState(0);
+  const [titleMinHeight, setTitleMinHeight] = useState(0);
+
+  useEffect(() => {
+    setDescTextMinHeight(
+      getBiggestHeight(document.querySelectorAll(".single-tour .info p"))
+    );
+    setTitleMinHeight(
+      getBiggestHeight(document.querySelectorAll(".single-tour .info h5"))
+    );
+    const equalHeight = () => {
+      // reset height to get new biggest height
+      setDescTextMinHeight(0);
+      setTitleMinHeight(0);
+      // set new biggest height
+      setTimeout(() => {
+        if (window.matchMedia("(max-width: 600px)").matches) {
+          setDescTextMinHeight(0);
+        } else {
+          setDescTextMinHeight(
+            getBiggestHeight(document.querySelectorAll(".single-tour .info p"))
+          );
+          setTitleMinHeight(
+            getBiggestHeight(document.querySelectorAll(".single-tour .info h5"))
+          );
+        }
+      }, 1000);
+    };
+    const throttleEqualHeight = throttle(equalHeight, 1000);
+    window.addEventListener("resize", throttleEqualHeight);
+    return () => {
+      window.removeEventListener("resize", throttleEqualHeight);
+    };
+  }, [showFullText]);
 
   const toggleText = () => setShowFullText(!showFullText);
 
@@ -19,8 +54,13 @@ const Tour = ({ tour, removeTour, descHeights, descHeight, setDescHeight }) => {
         <span>{formatter.format(price.replace(",", ""))}</span>
       </div>
       <div className="info">
-        <h5>{name}</h5>
-        <p className={showFullText ? "" : "limit"}>{info}</p>
+        <h5 style={{ minHeight: `${titleMinHeight}px` }}>{name}</h5>
+        <p
+          style={{ minHeight: showFullText ? `${descTextMinHeight}px` : 0 }}
+          className={showFullText ? "" : "limit"}
+        >
+          {info}
+        </p>
         {showFullText ? (
           <button className="show-less-btn" onClick={toggleText}>
             Show Less
