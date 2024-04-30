@@ -13,7 +13,7 @@ const App = () => {
   return (
     <section id="accordion" data-show-one="false" ref={accordionContainerRef}>
       <h2>Frequently Asked Questions</h2>
-      {showOne ? <Questions /> : <Questions2 />}
+      {showOne ? <Questions2 /> : <Questions />}
     </section>
   );
 };
