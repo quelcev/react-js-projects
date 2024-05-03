@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -7,13 +7,18 @@ import { recipesApi } from "../utils";
 const Recipe = () => {
   const { id } = useParams();
   const [recipe, setRecipe] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
         const response = await fetch(`${recipesApi}/${id}`);
-        const data = await response.json();
-        setRecipe(data);
+        if (!response.ok) {
+          navigate("/");
+        } else {
+          const data = await response.json();
+          setRecipe(data);
+        }
       } catch (error) {
         console.log(error);
       }
