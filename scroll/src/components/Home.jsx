@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { FaBars } from "react-icons/fa6";
 import Links from "./Links";
 import { throttle } from "../utils";
+import heroImg from "../assets/hero-img.jpg";
 
 const Home = ({
   handleScrollTo,
@@ -50,7 +51,12 @@ const Home = ({
   }, []);
 
   return (
-    <section id="home" className="hero-container" ref={homeRef}>
+    <section
+      id="home"
+      className="hero-container"
+      ref={homeRef}
+      style={{ backgroundImage: `url(${heroImg})` }}
+    >
       <div className="hero-center">
         <nav className={stickyNav ? "nav sticky" : "nav"} ref={navRef}>
           <div className="nav-center">

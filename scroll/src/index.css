@@ -55,7 +55,6 @@ Scroll CSS
 */
 .hero-container {
   min-height: 100vh;
-  background-image: url("./hero-img.jpg");
   background-size: cover;
   background-position: center;
   position: relative;
