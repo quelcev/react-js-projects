@@ -1,6 +1,7 @@
 import { removeCartItem, toggleAmount } from "../features/cart/cartSlice";
 import { ChevronDown, ChevronUp } from "../icons";
 import { useDispatch } from "react-redux";
+import { formatter } from "../utils";
 
 const CartItem = ({ item }) => {
   const { id, img, title, price, amount } = item;
@@ -11,7 +12,7 @@ const CartItem = ({ item }) => {
       <img src={img} alt={title} />
       <div>
         <h4>{title}</h4>
-        <h4 className="item-price">${price}</h4>
+        <h4 className="item-price">{formatter.format(price)}</h4>
         <button
           className="remove-btn"
           onClick={() => dispatch(removeCartItem({ id }))}

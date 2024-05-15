@@ -1,10 +1,18 @@
 import { useSelector, useDispatch } from "react-redux";
 import CartItem from "./CartItem";
-import { clearCart } from "../features/cart/cartSlice";
+import { clearCart, setAmount, setTotal } from "../features/cart/cartSlice";
+import { useEffect } from "react";
+import { formatter } from "../utils";
 
 const CartContainer = () => {
   const { cartItems, total, amount } = useSelector(({ cart }) => cart);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setAmount());
+    dispatch(setTotal());
+    // eslint-disable-next-line
+  }, [cartItems]);
 
   if (amount === 0) {
     return (
@@ -30,7 +38,7 @@ const CartContainer = () => {
           <hr />
           <div className="cart-total">
             <h4>
-              total <span>${total}</span>
+              total <span>{formatter.format(total)}</span>
             </h4>
           </div>
           <button
