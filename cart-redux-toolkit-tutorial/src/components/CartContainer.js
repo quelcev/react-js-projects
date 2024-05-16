@@ -1,53 +1,52 @@
 import { useSelector, useDispatch } from "react-redux";
 import CartItem from "./CartItem";
-import { clearCart, setAmount, setTotal } from "../features/cart/cartSlice";
+import { setAmount, setTotal } from "../features/cart/cartSlice";
 import { useEffect } from "react";
 import { formatter } from "../utils";
+import { toggleModal } from "../features/modal/modalSlice";
 
 const CartContainer = () => {
-  const { cartItems, total, amount } = useSelector(({ cart }) => cart);
+  const { cartItems, total, amount, isLoading } = useSelector(
+    ({ cart }) => cart
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(setAmount());
     dispatch(setTotal());
-    // eslint-disable-next-line
-  }, [cartItems]);
-
-  if (amount === 0) {
-    return (
-      <section className="cart">
-        <header>
-          <h2>Your Bag</h2>
-          <h4 className="empty-cart">is currently empty</h4>
-        </header>
-      </section>
-    );
-  }
+  }, [cartItems, dispatch]);
 
   return (
     <section className="cart">
       <header>
         <h2>Your Bag</h2>
-        <div>
-          {cartItems.map((item) => {
-            return <CartItem key={item.id} item={item} />;
-          })}
-        </div>
-        <footer>
-          <hr />
-          <div className="cart-total">
-            <h4>
-              total <span>{formatter.format(total)}</span>
-            </h4>
-          </div>
-          <button
-            className="btn clear-btn"
-            onClick={() => dispatch(clearCart())}
-          >
-            Clear Cart
-          </button>
-        </footer>
+        {isLoading ? (
+          <div className="loader"></div>
+        ) : amount === 0 ? (
+          <h4 className="empty-cart">is currently empty</h4>
+        ) : (
+          <>
+            <div>
+              {cartItems.map((item) => {
+                return <CartItem key={item.id} item={item} />;
+              })}
+            </div>
+            <footer>
+              <hr />
+              <div className="cart-total">
+                <h4>
+                  total <span>{formatter.format(total)}</span>
+                </h4>
+              </div>
+              <button
+                className="btn clear-btn"
+                onClick={() => dispatch(toggleModal("show"))}
+              >
+                Clear Cart
+              </button>
+            </footer>
+          </>
+        )}
       </header>
     </section>
   );
