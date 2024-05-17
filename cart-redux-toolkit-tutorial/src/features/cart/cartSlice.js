@@ -1,24 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { cartApi } from "../../utils";
-
-export const fetchCartItems = createAsyncThunk(
-  "cart/fetchCartItems",
-  async () => {
-    const response = await fetch(cartApi);
-    const { ok } = response;
-    let data = [];
-    if (ok) {
-      data = await response.json();
-    }
-    return { data };
-  }
-);
+import axios from "axios";
+// import { toggleModal } from "../modal/modalSlice";
 
 const initialState = {
   cartItems: [],
   amount: 0,
   total: 0,
-  isLoading: true,
+  isLoading: false,
 };
 
 const cartSlice = createSlice({
@@ -58,20 +47,40 @@ const cartSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchCartItems.pending, (state) => {
+        console.log("fetchCartItems.pending");
         state.isLoading = true;
       })
       .addCase(fetchCartItems.fulfilled, (state, action) => {
-        state.cartItems = action.payload.data;
+        console.log("fetchCartItems.fulfilled");
+        state.cartItems = action.payload;
         state.isLoading = false;
       })
       .addCase(fetchCartItems.rejected, (state, action) => {
+        console.log("fetchCartItems.rejected");
+        console.log(action.payload.msg);
         state.isLoading = false;
       });
   },
 });
 
+const asyncActions = {
+  fetchCartItems: createAsyncThunk(
+    "cart/fetchCartItems",
+    async (_, thunkAPI) => {
+      try {
+        const { data } = await axios(cartApi);
+        // thunkAPI.dispatch(toggleModal("show"));
+        return data;
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data);
+      }
+    }
+  ),
+};
+
 export const { clearCart, removeCartItem, toggleAmount, setAmount, setTotal } =
   cartSlice.actions;
+export const { fetchCartItems } = asyncActions;
 
 const cartReducer = cartSlice.reducer;
 export default cartReducer;
