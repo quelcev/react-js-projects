@@ -2,7 +2,7 @@ import { formatter } from "../utils";
 
 const ProductsContainer = ({ filteredProducts }) => {
   if (filteredProducts.length === 0) {
-    return <h1>No Products Found</h1>;
+    return <h2>No Products Found</h2>;
   }
 
   return (
@@ -15,7 +15,6 @@ const ProductsContainer = ({ filteredProducts }) => {
             <div>
               <h5 className="product-name">{title}</h5>
               <span className="product-price">{formatter.format(price)}</span>
-              <h1>{company}</h1>
             </div>
           </article>
         );
