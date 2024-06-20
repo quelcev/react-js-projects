@@ -1,0 +1,2 @@
+body{background-color:#000;height:100vh;margin:0;overflow:hidden}span{animation:animate 6s linear;background-image:url(https://cdn4.iconfinder.com/data/icons/general-office/91/General_Office_54-1024.png);background-size:cover;height:100px;left:50%;pointer-events:none;position:absolute;top:50%;transform:translate(-50%,-50%);width:100px}@keyframes animate{0%{filter:hue-rotate(0);opacity:1;transform:translate(-50%,-50%)}to{filter:hue-rotate(2turn);opacity:0;transform:translate(-50%,-3000%)}}
+/*# sourceMappingURL=main.8a2619f6.css.map*/
